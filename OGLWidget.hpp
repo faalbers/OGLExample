@@ -3,6 +3,16 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_2_Compatibility>
+#include <QOpenGLVersionFunctionsFactory>
+#include <string>
+#include <fstream>
+#include <sstream>
+
+struct ShaderProgramSource
+{
+    std::string VertexSource;
+    std::string FragmentSource;
+};
 
 // default OpenGL version is OpenGL SE 2.0
 //class OGLWidget : public QOpenGLWidget, public QOpenGLFunctions
@@ -13,6 +23,9 @@ class OGLWidget : public QOpenGLWidget, public QOpenGLFunctions_3_2_Compatibilit
 public:
     OGLWidget(QWidget *parent = nullptr);
 
+    static ShaderProgramSource  ParseShader(const std::string &filePath);
+    static unsigned int         CompileShader(unsigned int type, const std::string &source);
+    static unsigned int         CreateShaders(const std::string &vertexShader, const std::string &fragmentShader);
 protected:
     void initializeGL() override;
     void paintGL() override;
