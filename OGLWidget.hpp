@@ -23,9 +23,9 @@ class OGLWidget : public QOpenGLWidget, public QOpenGLFunctions_3_2_Compatibilit
 public:
     OGLWidget(QWidget *parent = nullptr);
 
-    static ShaderProgramSource  ParseShader(const std::string &filePath);
-    static unsigned int         CompileShader(unsigned int type, const std::string &source);
-    static unsigned int         CreateShaders(const std::string &vertexShader, const std::string &fragmentShader);
+    ShaderProgramSource  ParseShader(const std::string &filePath);
+    unsigned int         CompileShader(unsigned int type, const std::string &source);
+    unsigned int         CreateShaders(const std::string &vertexShader, const std::string &fragmentShader);
 protected:
     void initializeGL() override;
     void paintGL() override;

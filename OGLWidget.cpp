@@ -112,27 +112,27 @@ ShaderProgramSource OGLWidget::ParseShader(const std::string &filePath)
 
 unsigned int OGLWidget::CompileShader(unsigned int type, const std::string &source)
 {
-    QOpenGLFunctions_3_2_Compatibility *fa = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_3_2_Compatibility>();
+    //QOpenGLFunctions_3_2_Compatibility *fa = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_3_2_Compatibility>();
 
-    unsigned int id = fa->glCreateShader(type);
+    unsigned int id = glCreateShader(type);
     const char *src = source.c_str();
     // although src is a pointer, it needs the pointer to that pointer
     // nullptr means string is null ended
-    fa->glShaderSource(id, 1, &src, nullptr);
-    fa->glCompileShader(id);
+    glShaderSource(id, 1, &src, nullptr);
+    glCompileShader(id);
 
     int result;
-    fa->glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
     if ( result == GL_FALSE ) {
         int length;
-        fa->glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
         auto message = new char[length];
-        fa->glGetShaderInfoLog(id, length, &length, message);
+        glGetShaderInfoLog(id, length, &length, message);
         std::cout << "Failed to compile shader " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment")
             << std::endl;
         std::cout << message << std::endl;
         delete[] message;
-        fa->glDeleteShader(id);
+        glDeleteShader(id);
         return 0;
     }
 
@@ -141,21 +141,21 @@ unsigned int OGLWidget::CompileShader(unsigned int type, const std::string &sour
 
 unsigned int OGLWidget::CreateShaders(const std::string &vertexShader, const std::string &fragmentShader)
 {
-    QOpenGLFunctions_3_2_Compatibility *fa = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_3_2_Compatibility>();
+    //QOpenGLFunctions_3_2_Compatibility *fa = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_3_2_Compatibility>();
     
-    unsigned int program = fa->glCreateProgram();
+    unsigned int program = glCreateProgram();
     
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-    fa->glAttachShader(program, vs);
-    fa->glAttachShader(program, fs);
-    fa->glLinkProgram(program);
-    fa->glValidateProgram(program);
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+    glValidateProgram(program);
 
     // since they are already linked , they can be deleted now
-    fa->glDeleteShader(vs);
-    fa->glDeleteShader(fs);
+    glDeleteShader(vs);
+    glDeleteShader(fs);
 
     return program;
 }
